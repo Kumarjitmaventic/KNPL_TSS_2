@@ -1,0 +1,8 @@
+# Generated services-manifest.yml based on template version 0.1.0
+# appName = knpl-tss-app
+---
+create-services:
+# ------------------------------------------------------------
+  - name:   knpl-tss-app-db
+    broker: hana  # 'hanatrial' on trial landscapes
+    plan: "hdi-shared"

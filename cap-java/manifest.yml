@@ -1,0 +1,32 @@
+# Generated manifest.yml based on template version 0.1.0
+# appName = knpl-tss-app
+# language=java
+# multitenancy=false
+---
+applications:
+# -----------------------------------------------------------------------------------
+# Backend Service
+# -----------------------------------------------------------------------------------
+- name: knpl-tss-app-srv
+  random-route: true  # for development only
+  path: srv/target/knpl-tss-app-exec.jar
+  memory: 800M
+  disk_quota: 800M
+  env:
+    SPRING_PROFILES_ACTIVE: cloud
+  buildpack: java_buildpack
+  services:
+  - knpl-tss-app-db
+
+# -----------------------------------------------------------------------------------
+# HANA Database Content Deployer App
+# -----------------------------------------------------------------------------------
+- name: knpl-tss-app-db-deployer
+  path: db
+  no-route: true
+  health-check-type: process
+  memory: 256M
+  instances: 1
+  buildpack: nodejs_buildpack
+  services:
+  - knpl-tss-app-db

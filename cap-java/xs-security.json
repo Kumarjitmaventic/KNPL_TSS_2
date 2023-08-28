@@ -1,0 +1,92 @@
+{
+    "xsappname": "knpl-tss-web",
+    "tenant-mode": "dedicated",
+    "description": "Security profile of called application",
+    "oauth2-configuration": {
+        "token-validity": 604800,
+        "refresh-token-validity": 2592000,
+        "redirect-uris": [
+            "https://*.ap10cf.applicationstudio.cloud.sap/login/callback",
+            "https://*.ap11cf.applicationstudio.cloud.sap/login/callback",
+            "https://*.cf.ap10.hana.ondemand.com/login/callback",
+            "https://*.cf.ap11.hana.ondemand.com/login/callback",
+            "https://*.cfapps.ap10.hana.ondemand.com/login/callback",
+            "https://*.cfapps.ap11.hana.ondemand.com/login/callback"
+        ]
+    },
+    "scopes": [
+        {
+            "name": "uaa.user",
+            "description": "UAA"
+        },
+        {
+            "name": "$XSAPPNAME.MANAGE_ADMIN",
+            "description": "Admin can perform CRUD operation"
+        },
+        {
+            "name": "$XSAPPNAME.READ_ADMIN",
+            "description": "Admin can read entity"
+        },
+        {
+            "name": "$XSAPPNAME.CREATE_ADMIN",
+            "description": "Admin can create record"
+        },
+        {
+            "name": "$XSAPPNAME.UPDATE_ADMIN",
+            "description": "Admin can update record"
+        },
+        {
+            "name": "$XSAPPNAME.DELETE_ADMIN",
+            "description": "Admin can delete record"
+        },
+        {
+            "name": "$XSAPPNAME.MANAGE_TSS_MOBILE",
+            "description": "TSS MOBILE can perform CRUD operation"
+        },
+        {
+            "name": "$XSAPPNAME.READ_TSS_MOBILE",
+            "description": "TSS MOBILE can read entity"
+        },
+        {
+            "name": "$XSAPPNAME.CREATE_TSS_MOBILE",
+            "description": "TSS MOBILE can create record"
+        },
+        {
+            "name": "$XSAPPNAME.UPDATE_TSS_MOBILE",
+            "description": "TSS MOBILE can update record"
+        },
+        {
+            "name": "$XSAPPNAME.DELETE_TSS_MOBILE",
+            "description": "TSS MOBILE can delete record"
+        }
+    ],
+    "role-templates": [
+        {
+            "name": "Token_Exchange",
+            "description": "UAA",
+            "scope-references": [
+                "uaa.user"
+            ]
+        },
+        {
+            "name": "TSS_Admin",
+            "description": "Manage TSS admin configurations",
+            "scope-references": [
+                "$XSAPPNAME.MANAGE_ADMIN",
+                "$XSAPPNAME.READ_ADMIN"
+            ]
+        },
+        {
+            "name": "TSS_Mobile",
+            "description": "Manage TSS Mobile configurations",
+            "scope-references": [
+                "$XSAPPNAME.MANAGE_TSS_MOBILE",
+                "$XSAPPNAME.READ_TSS_MOBILE",
+                "$XSAPPNAME.CREATE_TSS_MOBILE",
+                "$XSAPPNAME.UPDATE_TSS_MOBILE",
+                "$XSAPPNAME.DELETE_TSS_MOBILE"
+            ]
+        }
+    ]
+  }
+  

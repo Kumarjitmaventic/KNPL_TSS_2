@@ -1,0 +1,8 @@
+spring:
+    datasource:
+        url: "jdbc:sap://fcc933e4-c588-4416-9d56-cf264a9a702b.hana.prod-ap11.hanacloud.ondemand.com:443?encrypt=true&validateCertificate=true&currentschema=F29C80B184694E17BE0BD639D516B852"
+        driver-class-name: com.sap.db.jdbc.Driver
+        username: F29C80B184694E17BE0BD639D516B852_D100QZMOJJLDRSF34IMWOAJAP_RT
+        password: "Nc3Zr-c1j8lYeRh2yNrO3E5se6GQEmZw9Bkl7bWLVnGONIDQzAitCWihQz7AW0UUDPI1WW.yaWdwj9r81Rp-4C44YPwFMTCCLWfv.zZR5Vq0pE3RWnjX20b1.KN59q.v"
+        initialization-mode: always
+        hikari.maximum-pool-size: 1

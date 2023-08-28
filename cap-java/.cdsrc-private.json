@@ -1,0 +1,19 @@
+{
+  "requires": {
+    "db": {
+      "binding": {
+        "type": "cf",
+        "apiEndpoint": "https://api.cf.ap11.hana.ondemand.com",
+        "org": "Kansai Nerolac Paints Ltd_knpl-dev-projects",
+        "space": "TSS",
+        "instance": "knpl-tss-app-db",
+        "key": "knpl-tss-app-db-key",
+        "resolved": false
+      },
+      "kind": "hana",
+      "vcap": {
+        "name": "db"
+      }
+    }
+  }
+}

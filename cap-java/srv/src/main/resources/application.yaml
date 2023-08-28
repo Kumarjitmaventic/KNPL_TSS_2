@@ -1,0 +1,7 @@
+---
+server.port : 8083
+spring:
+  config.activate.on-profile: default
+cds:
+  datasource:
+    auto-config.enabled: false  
