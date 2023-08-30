@@ -121,7 +121,7 @@ public class DefectServiceHandler implements EventHandler {
         }
     }
 
-    @After(event = CdsService.EVENT_READ, entity = "DefectService.GetProductsBySubCategoryAndVehicleType")
+    @After(event = CdsService.EVENT_READ, entity = "DefectService.GetProductsBySubCategoryAndVehicleTypeCopy")
     public void afterDefectDetailsCompanyRead(CdsReadEventContext context){
         Result defct = context.getResult();
         try{
@@ -129,6 +129,11 @@ public class DefectServiceHandler implements EventHandler {
             int totalRow = copyResult.size();
             String sId = "";
             for(int i = 0;i<totalRow;i++){
+                // copyResult.get(i).remove("JV_name");
+                // copyResult.get(i).remove("problemDescription");
+                // copyResult.get(i).remove("targetSubstrate");
+                // copyResult.get(i).remove("substrateMaterial");
+
                 if(sId.equals(copyResult.get(i).get("ID").toString())){
                     LOG.info("True");
                     copyResult.remove(i);

@@ -8,6 +8,12 @@ service DefectService {
     // ])
     view GetProductsBySubCategoryAndVehicleType as select from DefectDetails {key product.ID as ID, product.name, product.code, 
             category.ID as category_ID, subCategory.ID as subCategory_ID, vehicleType.ID as vehicleType_ID, vehicleType.name as vehicleType_name,
+            mainCustomer.name as cust_name }
+            group by product.ID, product.name, product.code, vehicleType.ID, vehicleType.name, category.ID, subCategory.ID, mainCustomer.name;
+
+    @cds.redirection.target : false
+    view GetProductsBySubCategoryAndVehicleTypeCopy as select from DefectDetails {key product.ID as ID, product.name, product.code, 
+            category.ID as category_ID, subCategory.ID as subCategory_ID, vehicleType.ID as vehicleType_ID, vehicleType.name as vehicleType_name,
             mainCustomer.name as cust_name, JV.name as JV_name, problemDescription,targetSubstrate.name as targetSubstrate,substrateMaterial.name as substrateMaterial }
             group by product.ID, product.name, product.code, vehicleType.ID, vehicleType.name, category.ID, subCategory.ID, mainCustomer.name,JV.name,problemDescription,substrateMaterial.name,targetSubstrate.name order by ID asc;
 
