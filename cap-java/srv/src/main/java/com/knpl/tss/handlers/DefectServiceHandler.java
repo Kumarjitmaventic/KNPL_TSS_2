@@ -137,13 +137,38 @@ public class DefectServiceHandler implements EventHandler {
         try{
             List<Row> copyResult = defct.list();
             String previousID = "";
+            String name = "";
+            String code ="";
+            String vechicleType_ID = "";
+            String vechicleType_name = "";
+            String category_ID = "";
+            String subCategory_ID = "";
+            String customerName = "";
             for(int i = 0;i<copyResult.size();i++){
-                if(previousID.equals(copyResult.get(i).get("ID").toString())){
+
+
+                
+                if( previousID.equals(copyResult.get(i).get("ID").toString())                       &&
+                    name.equals(copyResult.get(i).get("name").toString())                           &&
+                    code.equals(copyResult.get(i).get("code").toString())                           &&
+                    vechicleType_ID.equals(copyResult.get(i).get("vehicleType_ID").toString())      &&
+                    vechicleType_name.equals(copyResult.get(i).get("vehicleType_name").toString())  &&
+                    category_ID.equals(copyResult.get(i).get("category_ID").toString())             &&
+                    subCategory_ID.equals(copyResult.get(i).get("subCategory_ID").toString())       &&
+                    customerName.equals(copyResult.get(i).get("cust_name").toString())
+                ){
                     copyResult.remove(i);
                     --i;
                 }
                 else{
                     previousID = copyResult.get(i).get("ID").toString();
+                    name = copyResult.get(i).get("name").toString();
+                    code = copyResult.get(i).get("code").toString();
+                    vechicleType_ID = copyResult.get(i).get("vehicleType_ID").toString();
+                    vechicleType_name = copyResult.get(i).get("vehicleType_name").toString();
+                    category_ID = copyResult.get(i).get("category_ID").toString();
+                    subCategory_ID = copyResult.get(i).get("subCategory_ID").toString();
+                    customerName = copyResult.get(i).get("cust_name").toString();
                 }
             }
             previousID ="";

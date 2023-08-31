@@ -15,7 +15,8 @@ service DefectService {
     view GetProductsBySubCategoryAndVehicleTypeCopy as select from DefectDetails {key product.ID as ID, product.name, product.code, 
             category.ID as category_ID, subCategory.ID as subCategory_ID, vehicleType.ID as vehicleType_ID, vehicleType.name as vehicleType_name,
             mainCustomer.name as cust_name, JV.name as JV_name, problemDescription,targetSubstrate.name as targetSubstrate,substrateMaterial.name as substrateMaterial }
-            group by product.ID, product.name, product.code, vehicleType.ID, vehicleType.name, category.ID, subCategory.ID, mainCustomer.name,JV.name,problemDescription,substrateMaterial.name,targetSubstrate.name order by ID asc;
+            group by product.ID, product.name, product.code, vehicleType.ID, vehicleType.name, category.ID, subCategory.ID, mainCustomer.name,JV.name,problemDescription,substrateMaterial.name,targetSubstrate.name 
+            order by ID asc, name asc, code asc, category_ID asc, subCategory_ID asc, vehicleType_ID asc, vehicleType_name asc, cust_name asc;
 
     @cds.redirection.target
     // @(restrict: [         
