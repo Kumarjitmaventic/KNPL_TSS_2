@@ -181,3 +181,10 @@ entity UploadDefectFiles : cuid {
         content : LargeBinary @Core.MediaType : 'text/csv';
 }
 
+entity DefectDetailsListUnderSubCategory as select from MstrSubCategories as subCategories
+    left join DefectDetails as DF on subCategories.ID = DF.subCategory.ID and subCategories.category.ID = DF.category.ID {
+        key subCategories.ID, subCategories.name, subCategories.category.ID as category_ID, subCategories.category.name as category_name,
+        DF.product.name as product_name, DF.mainCustomer.name as customer_name, DF.JV.name as jv, DF.substrateMaterial.name as substrateMaterial,
+        DF.targetSubstrate.name as targetSubstrate, DF.problemDescription 
+    } order by ID asc;
+

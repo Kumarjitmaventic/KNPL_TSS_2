@@ -17,7 +17,6 @@ service DefectService {
             mainCustomer.name as cust_name, JV.name as JV_name, problemDescription,targetSubstrate.name as targetSubstrate,substrateMaterial.name as substrateMaterial }
             group by product.ID, product.name, product.code, vehicleType.ID, vehicleType.name, category.ID, subCategory.ID, mainCustomer.name,JV.name,problemDescription,substrateMaterial.name,targetSubstrate.name order by ID asc;
 
-
     @cds.redirection.target
     // @(restrict: [         
     //     {grant: ['READ'], to: 'MANAGE_ADMIN'},
@@ -32,6 +31,8 @@ service DefectService {
     //     {grant: ['READ', 'CREATE', 'UPDATE','DELETE'], to: 'MANAGE_ADMIN'},
     // ])
     entity DefectDetails                 as projection on knpl_tss.DefectDetails where isArchive = false;
+
+    entity DefectDetailsListUnderSubCategory as projection on knpl_tss.DefectDetailsListUnderSubCategory;
 
 
     // @(restrict: [ 

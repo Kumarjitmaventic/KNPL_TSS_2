@@ -29,8 +29,11 @@ import cds.gen.defectservice.DefectDetailVersions;
 import cds.gen.defectservice.DefectDetailVersions_;
 import cds.gen.defectservice.DefectDetails;
 import cds.gen.defectservice.DefectDetails_;
+import cds.gen.defectservice.MstrSubCategories_;
 import cds.gen.defectservice.MstrVehicleTypes;
 import cds.gen.defectservice.MstrVehicleTypes_;
+
+import com.sap.cds.Result;
 
 import java.util.stream.Collectors;
 @Service
@@ -198,5 +201,10 @@ public class DefectService {
         defectDetailMap.put("isArchive", Boolean.TRUE);
         CqnUpdate cqnUpdate = Update.entity(DefectDetailVersions_.class).data(defectDetailMap).where(a -> a.defectDetail_ID().eq(defectDetailUUID));
         db.run(cqnUpdate);
+    }
+
+    public Result fetchSubCategory(String categoryName){
+        CqnSelect cqnSelect = Select.from(MstrSubCategories_.class).where(subCat -> subCat.category().name().eq(categoryName));
+        return db.run(cqnSelect);
     }
 }

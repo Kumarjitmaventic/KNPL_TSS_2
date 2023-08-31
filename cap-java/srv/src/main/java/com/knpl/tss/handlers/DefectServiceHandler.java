@@ -1,14 +1,19 @@
 package com.knpl.tss.handlers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import com.knpl.tss.exceptions.UUIDNotFoundException;
 import com.knpl.tss.services.DefectService;
 import com.knpl.tss.utilities.Utility;
+import com.sap.cds.CdsData;
 import com.sap.cds.Result;
 import com.sap.cds.Row;
+import com.sap.cds.Struct;
+import com.sap.cds.ql.Select;
 import com.sap.cds.ql.Update;
 
 import com.sap.cds.ql.cqn.CqnUpdate;
@@ -25,6 +30,7 @@ import com.sap.cds.services.persistence.PersistenceService;
 import com.sap.cds.services.request.ParameterInfo;
 
 import org.hibernate.annotations.SourceType;
+import org.hibernate.transform.ResultTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +41,9 @@ import cds.gen.defectservice.DefectDetails_;
 import cds.gen.defectservice.DefectService_;
 import cds.gen.defectservice.GetProductsBySubCategoryAndVehicleType;
 import cds.gen.defectservice.GetProductsBySubCategoryAndVehicleType_;
+import cds.gen.defectservice.MstrSubCategories;
+import cds.gen.defectservice.MstrSubCategories_;
+import com.sap.cds.ql.cqn.CqnSelect;
 
 
 
@@ -92,58 +101,52 @@ public class DefectServiceHandler implements EventHandler {
 	public void onDefectDetailsUpdate(DefectDetails defectDetails) {
         defectService.processVersionSnapshot(defectDetails);
     }
-    @On(event = CdsService.EVENT_READ, entity = "DefectService.GetProductsBySubCategoryAndVehicleType")
-    public void onDefectDetailsCompanyRead(CdsReadEventContext context){
-        // System.out.println("its DefectDetailsCompany DefectDetailsCompany DefectDetailsCompany");
-        ParameterInfo parameterInfo = context.getParameterInfo();
-        try{
-            String query= parameterInfo.getQueryParams().get("$filter");
+
+    // @On(event = CdsService.EVENT_READ, entity = "DefectService.GetProductsBySubCategoryAndVehicleType")
+    // public void onDefectDetailsCompanyRead(CdsReadEventContext context){
+    //     // System.out.println("its DefectDetailsCompany DefectDetailsCompany DefectDetailsCompany");
+    //     ParameterInfo parameterInfo = context.getParameterInfo();
+    //     try{
+    //         String query= parameterInfo.getQueryParams().get("$filter");
         
-            int indexVehicle_type_start = query.indexOf("'",query.indexOf("vehicleType_name eq '")) + 1;
-            int indexVehicle_type_end = query.indexOf("'",indexVehicle_type_start);
+    //         int indexVehicle_type_start = query.indexOf("'",query.indexOf("vehicleType_name eq '")) + 1;
+    //         int indexVehicle_type_end = query.indexOf("'",indexVehicle_type_start);
 
-            int indexCategory_start = query.indexOf(" ",query.indexOf("category_ID eq ")) + 4;
-            int indexCategory_end = query.indexOf(" ",indexCategory_start);
+    //         int indexCategory_start = query.indexOf(" ",query.indexOf("category_ID eq ")) + 4;
+    //         int indexCategory_end = query.indexOf(" ",indexCategory_start);
 
-            int indexSubCategory_start = query.indexOf(" ",query.indexOf("subCategory_ID eq ")) + 4;
-            int indexSubCategory_end = query.indexOf(" ",indexSubCategory_start);
+    //         int indexSubCategory_start = query.indexOf(" ",query.indexOf("subCategory_ID eq ")) + 4;
+    //         int indexSubCategory_end = query.indexOf(" ",indexSubCategory_start);
 
-            int indexKeyWord_start = query.indexOf("'",query.indexOf("(cust_name),'"))+1;
-            int indexKeyWord_end = query.indexOf("'",indexKeyWord_start);
+    //         int indexKeyWord_start = query.indexOf("'",query.indexOf("(cust_name),'"))+1;
+    //         int indexKeyWord_end = query.indexOf("'",indexKeyWord_start);
 
-            String vehicle_type = query.substring(indexVehicle_type_start,indexVehicle_type_end);
-            String category = query.substring(indexCategory_start,indexCategory_end);
-            String subCategory = query.substring(indexSubCategory_start,indexSubCategory_end);
-            String keyWord = query.substring(indexKeyWord_start,indexKeyWord_end);
-        }
-        catch (Exception e){
-            // LOG.warn("No filter");
-        }
-    }
+    //         String vehicle_type = query.substring(indexVehicle_type_start,indexVehicle_type_end);
+    //         String category = query.substring(indexCategory_start,indexCategory_end);
+    //         String subCategory = query.substring(indexSubCategory_start,indexSubCategory_end);
+    //         String keyWord = query.substring(indexKeyWord_start,indexKeyWord_end);
+    //     }
+    //     catch (Exception e){
+    //         // LOG.warn("No filter");
+    //     }
+    // }
 
     @After(event = CdsService.EVENT_READ, entity = "DefectService.GetProductsBySubCategoryAndVehicleTypeCopy")
     public void afterDefectDetailsCompanyRead(CdsReadEventContext context){
         Result defct = context.getResult();
         try{
             List<Row> copyResult = defct.list();
-            int totalRow = copyResult.size();
-            String sId = "";
-            for(int i = 0;i<totalRow;i++){
-                // copyResult.get(i).remove("JV_name");
-                // copyResult.get(i).remove("problemDescription");
-                // copyResult.get(i).remove("targetSubstrate");
-                // copyResult.get(i).remove("substrateMaterial");
-
-                if(sId.equals(copyResult.get(i).get("ID").toString())){
-                    LOG.info("True");
+            String previousID = "";
+            for(int i = 0;i<copyResult.size();i++){
+                if(previousID.equals(copyResult.get(i).get("ID").toString())){
                     copyResult.remove(i);
-                    totalRow--;
+                    --i;
                 }
                 else{
-                    sId = copyResult.get(i).get("ID").toString();
+                    previousID = copyResult.get(i).get("ID").toString();
                 }
             }
-            sId ="";
+            previousID ="";
             context.setResult(copyResult);
         }
         catch(Exception e){
@@ -190,5 +193,28 @@ public class DefectServiceHandler implements EventHandler {
         // System.out.print(defct);
         // context.setResult(defct);
         // defectService.SetIdName("");
+    }
+
+    @After(event = CdsService.EVENT_READ, entity = "DefectService.DefectDetailsListUnderSubCategory")
+    public void afterDefectDetailsListUnderSubCategory(CdsReadEventContext context){
+        Result defctList = context.getResult();
+        try{
+            List<Row> copyResult = defctList.list();
+            String previousID = "";
+            for(int i = 0;i<copyResult.size();i++){
+                if(previousID.equals(copyResult.get(i).get("ID").toString())){
+                    copyResult.remove(i);
+                    --i;    // after removing next value row index will same as current so to check that staying current position
+                }
+                else{
+                    previousID = copyResult.get(i).get("ID").toString();
+                }
+            }
+            previousID ="";
+            context.setResult(copyResult);
+        }
+        catch(Exception e){
+            LOG.error(e.getMessage());
+        }
     }
 }
