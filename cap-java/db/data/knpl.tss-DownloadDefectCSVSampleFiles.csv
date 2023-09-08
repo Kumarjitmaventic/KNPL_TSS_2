@@ -1,2 +1,1 @@
-ID,mediatype,filename,content
-e8a1f0d0-e157-4d4b-8bcf-27ca5e192336,text/csv,defect-sample.csv,Defect ID;Vehicle Type;Product Name;Title;Problem Description;Cause of Problem;Counter Measures Taken;Incident Date;Record Date;Defect Category;Defect Sub Category;JV;Main Customer;Layer;Target Substrate;Substrate Material;Paint Type;Cross link type;Exterior/Interior;Atomization;Electrostatic;Composition;Drying Condition
+ID;CONTENT;MEDIATYPE;FILENAME

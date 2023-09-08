@@ -12,6 +12,14 @@ entity Users : cuid, managed {
         email    : String(50)                       @title : 'Email';
 }
 
+entity UserLoginData : managed {
+    key userName    : String(50);
+        totalLogin  : Integer;
+        lastLogin   : Timestamp;
+        appVersion  : String(10);
+        User        : Association to Users on User.email = $self.userName;
+}
+
 entity Products : cuid, managed {
         code          : String(120)@title : 'Product Code';
         name          : String(120)@title : 'Product Name';

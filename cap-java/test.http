@@ -1,0 +1,14 @@
+POST http://localhost:4004/odata/v4/user/Users
+Content-Type: application/json
+
+{
+    
+    "name":"Jibin Joy",
+    "email": "jibin@maventic.com",
+    "userType_ID": "efffe8db-b4d8-488d-8d30-8e0bbfd11ba0"
+}
+
+###
+
+GET http://localhost:4004/odata/v4/user/Users
+
